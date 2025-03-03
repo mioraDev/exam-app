@@ -1,0 +1,47 @@
+version: "3.1"
+
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: unless-stopped	
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: examdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  node-app:
+    build:
+      context: node-app
+      dockerfile: Dockerfile
+    container_name: node-app-container
+    restart: unless-stopped	
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+    environment:
+      DB_HOST: mariadb
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: examdb
+
+  angular-app:
+    build:
+      context: angular-app
+      dockerfile: Dockerfile
+    container_name: angular-app-container
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - node-app
+    volumes:
+      - ./angular-app/nginx.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  mariadb_data:
