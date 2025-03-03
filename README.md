@@ -14,6 +14,7 @@ Make sure you have the following installed on your machine:
 
 ### 1. Clone the Repository
 `git clone https://github.com/mioraDev/exam-app`
+
 `cd exam-app`
 
 ### 2. Build project
@@ -21,6 +22,8 @@ Run the following command to build images
 `docker compose build`
 
 ### 3. Run containers
+Run the following command to start the containers:
+
 `docker compose up`
 
 ## Access the application
